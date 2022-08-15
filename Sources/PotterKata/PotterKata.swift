@@ -1,6 +1,10 @@
-public struct PotterKata {
-    public private(set) var text = "Hello, World!"
+typealias bookTitle = Int
 
-    public init() {
+
+struct PotterBookDiscountCalculation {
+    let bookPrice: Double = 8
+
+    func calculateDiscount(books: [bookTitle]) -> Double {
+        .zero
     }
 }
