@@ -80,5 +80,6 @@ final class PotterKataTests: XCTestCase {
 
         XCTAssertEqual(discount, result)
     }
+ 
 }
 

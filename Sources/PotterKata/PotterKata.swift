@@ -6,15 +6,25 @@ struct PotterBookStore {
     let bookPrice: Double = 8
 
     func calculateTotalPrice(books: BooksTitles) -> Double {
-        let discountSets = getDiscountSets(books: books)
-        var totalPrice: Double = 0
-        var booksWithoutDiscount = books.count
-        discountSets.forEach { setCount in
-            totalPrice += getPriceWithDiscount(count: setCount)
-            booksWithoutDiscount -= setCount
-        }
+        let discountBooksPrice = calculatePriceForBooksWithDiscount(books: books)
+        let booksWithoutDiscountPrice = calculatePriceForBooksWithoutDiscount(books: books)
 
-        return totalPrice + (Double(booksWithoutDiscount) * bookPrice)
+
+        return discountBooksPrice + booksWithoutDiscountPrice
+    }
+
+    private func calculatePriceForBooksWithDiscount(books: BooksTitles) -> Double {
+        let lengthSets = getDiscountSets(books: books)
+        return lengthSets.reduce(Double.zero) { partialResult, length in
+            partialResult + getPriceWithDiscount(count: length)
+        }
+    }
+
+    private func calculatePriceForBooksWithoutDiscount(books: BooksTitles) -> Double {
+        let discountLengthSets = getDiscountSets(books: books)
+        let discountBooksCount = discountLengthSets.reduce(0, +)
+        let booksWithoutDiscountCount = books.count - discountBooksCount
+        return Double(booksWithoutDiscountCount) * bookPrice
     }
 
     private func getPriceWithDiscount(count: Int) -> Double {
