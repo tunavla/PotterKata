@@ -10,15 +10,29 @@ final class PotterKataTests: XCTestCase {
     }
 
     func test_selectOneBook_getZeroDiscountPrice() {
-        XCTAssertEqual(sut.calculateDiscount(books: [1]), 0)
-    }
-
-    func test_select1_2_2Books_get80CentsDiscount() {
-        let books = [1, 2, 2]
+        let books = [1]
+        let result = 0
 
         let discount = sut.calculateDiscount(books: books)
 
+        XCTAssertEqual(discount, result)
+    }
+
+    func test_select1_2_2Books_get0_8DollarsDiscount(){
+        let books = [1, 2, 2]
         let result = (8 + 8) * 0.05
+
+        let discount = sut.calculateDiscount(books: books)
+
+        XCTAssertEqual(discount, result)
+    }
+
+    func test_select1_2x2_3x2Books_get0_8DollarsDiscount(){
+        let books = [1, 2, 2, 3, 3]
+        let result = (8 + 8) * 0.05
+
+        let discount = sut.calculateDiscount(books: books)
+
         XCTAssertEqual(discount, result)
     }
 }
