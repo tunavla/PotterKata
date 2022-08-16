@@ -7,7 +7,7 @@ class PotterBookStore {
         static let librarySize: Int = 7
     }
 
-    var prices: [Float] = .init(
+    var prices = [Float](
         repeating: 0,
         count: Const.librarySize * 2.pow(Const.librarySize))
 
@@ -89,30 +89,33 @@ class PotterBookStore {
 
         library.enumerated().forEach { row, bookCount in
             guard bookCount != 0 else { return }
-                var library1 = createEmptyLibrary()
-                var library2 = library
+            var library1 = createEmptyLibrary()
+            var library2 = library
+
+            library1[row] += 1
+            library2[row] -= 1
+
+            libraries1.append(library1)
+            libraries2.append(library2)
+
+
+            for column in 0..<libraries1.count - 1 {
+                guard
+                    libraries2[safe: column]?[row] != nil,
+                    libraries2[safe: column]?[row] != 0
+                else { return }
+
+                library1 = libraries1[column]
+                library2 = libraries2[column]
 
                 library1[row] += 1
                 library2[row] -= 1
 
-                libraries1.append(library1)
-                libraries2.append(library2)
-
-
-                for column in 0..<libraries1.count - 1 {
-                    guard libraries2[safe: column]?[row] != nil, libraries2[safe: column]?[row] != 0 else { return }
-
-                    library1 = libraries1[column]
-                    library2 = libraries2[column]
-
-                    library1[row] += 1
-                    library2[row] -= 1
-
-                    if getPriceKey(library: library2) != 0 {
-                        libraries1.append(library1)
-                        libraries2.append(library2)
-                    }
+                if getPriceKey(library: library2) != 0 {
+                    libraries1.append(library1)
+                    libraries2.append(library2)
                 }
+            }
         }
         return (libraries1, libraries2)
 
