@@ -55,6 +55,7 @@ class PotterBookStore {
         return minPrice
     }
 
+    /// return array where index is book's title and value is count of that book
     func createLibrary(books: [Int]) -> [Int] {
         var library = createEmptyLibrary()
         books.forEach { book in
@@ -63,12 +64,11 @@ class PotterBookStore {
         return library
     }
 
-    // Returns the ability to sell at a time
+    /// return the ability to sell at a time
     private func isPurchase(_ library: [Int]) -> Bool {
         !library.contains { $0 > 1 }
     }
 
-    // Return price with discount
     private func getDiscountPrice(_ library: [Int]) -> Float {
         var count: Int = 0
         library.forEach { book in
@@ -80,9 +80,9 @@ class PotterBookStore {
         return result
     }
 
-    // Split library into all possible double subsets
-    // example: [1 1] = [0 1] + [1 0]
-    // example: [2 1] = [1 1] + [1 0] && [2 0] + [0 1]
+    /// Split library into all possible double subsets
+    /// example: [1 1] = [0 1] + [1 0]
+    /// example: [2 1] = [1 1] + [1 0] && [2 0] + [0 1]
     private func splitLibrary(_ library: [Int]) -> ([[Int]], [[Int]]) {
         var libraries1: [[Int]] = []
         var libraries2: [[Int]] = []
