@@ -3,59 +3,41 @@ import XCTest
 
 final class PotterKataTests: XCTestCase {
     var sut: PotterBookStore!
+    var bookPrice: Float!
 
     override func setUp() {
         super.setUp()
         sut = PotterBookStore()
+        bookPrice = 8
     }
 
-    func test_selectOneBook_getFullPrice() {
-        let books = [1]
-        let result: Float = 8
-
-        assertPrice(result, for: books)
+    func test_selectNoBooks_getZeroPrice() {
+        assertPrice(for: [], expectedPrice: .zero)
     }
 
-    func test_select2SameBooks_getFullPrice() {
-        let books = [1, 1]
-        let result: Float = 2 * 8
-
-        assertPrice(result, for: books)
+    func test_selectSameBooks_getFullPrice() {
+        assertPrice(for: [0], expectedPrice: bookPrice)
+        assertPrice(for: [1,1], expectedPrice: bookPrice * 2)
+        assertPrice(for: [Int].init(repeating: 6, count: 10), expectedPrice: 10 * bookPrice)
     }
 
-    func test_select2DifferentBooks_getPriceWithDiscount() {
-        let books = [1, 2]
-        let result: Float = 2 * 8 * 0.95
-
-        assertPrice(result, for: books)
-    }
-
-    func test_select1_2_2Books_getPriceWithDiscount(){
-        let books = [1, 2, 2]
-        let result: Float = (8 + 8) * 0.95 + 8
-
-        assertPrice(result, for: books)
-    }
-
-    func test_select1_2x2_3x2Books_getPriceWithDiscount(){
-        let books = [1, 2, 2, 3, 3]
-        let result: Float = (8 + 8 + 8) * 0.9 + (8 + 8) * 0.95
-
-        assertPrice(result, for: books)
-    }
-
-    func test_select1_2x2_3x2_4x2Books_getPriceWithDiscount(){
-        let books = [1, 2, 2, 3, 3, 4, 4]
-        let result: Float = 8 * 4 * 0.85 + 8 * 3 * 0.9
-
-        assertPrice(result, for: books)
-    }
-
-    func test_select1_2x2_3x2_4x2_5x2_Books_getPriceWithDiscount(){
-        let books = [1, 2, 2, 3, 3, 4, 4, 5, 5]
-        let result: Float =  8 * 5 * 0.75 + 8 * 4 * 0.85
-
-        assertPrice(result, for: books)
+    func test_selectDifferentBooks_getPriceWithDiscount() {
+        assertPrice(
+            for: [0,1],
+            expectedPrice: bookPrice * 2 * 0.95
+        )
+        assertPrice(
+            for: [1, 2, 2],
+            expectedPrice: bookPrice * 2 * 0.95 + bookPrice
+        )
+        assertPrice(
+            for: [1, 2, 2, 3, 3],
+            expectedPrice: bookPrice * 3 * 0.9 + bookPrice * 2 * 0.95
+        )
+        assertPrice(
+            for: [1, 2, 2, 3, 3, 4, 4],
+            expectedPrice: bookPrice * 4 * 0.85 + bookPrice * 3 * 0.9
+        )
     }
 
     /// In this case 1 each of books one through five make a set of 5 unique books eligible for 25% off, and one each of books two through
@@ -65,16 +47,16 @@ final class PotterKataTests: XCTestCase {
     func test_select1_2x2_3x2_4x2_5x2_6x1Books_getOptimalPriceWithDiscount(){
         let books = [1, 2, 2, 3, 3, 4, 4, 5, 5, 6]
         let result: Float =  8 * 5 * 0.75 + 8 * 5 * 0.75
-        assertPrice(result, for: books)
+        assertPrice(for: books, expectedPrice: result)
     }
 
     func assertPrice(
-        _ expectedPrice: Float,
         for books: [Int],
+        expectedPrice: Float,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        XCTAssertEqual(sut.calculateOptimalPrice(books), expectedScore, file: file, line: line)
+        XCTAssertEqual(sut.calculateOptimalPrice(books), expectedPrice, file: file, line: line)
     }
 
 }
