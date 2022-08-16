@@ -2,13 +2,12 @@ import XCTest
 @testable import PotterKata
 
 final class PotterKataTests: XCTestCase {
-    var sut: PotterBookStore!
-    var bookPrice: Float!
+    private var sut: PotterBookStore!
+    private let bookPrice = Constants.bookPrice
 
     override func setUp() {
         super.setUp()
         sut = PotterBookStore()
-        bookPrice = 8
     }
 
     func test_selectNoBooks_getZeroPrice() {

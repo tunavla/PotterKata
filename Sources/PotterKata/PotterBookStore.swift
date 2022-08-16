@@ -2,14 +2,9 @@ import Foundation
 
 class PotterBookStore {
 
-    enum Const {
-        static let bookPrice: Float = 8
-        static let librarySize: Int = 7
-    }
-
     var prices = [Float](
         repeating: 0,
-        count: Const.librarySize * 2.pow(Const.librarySize))
+        count: Constants.librarySize * 2.pow(Constants.librarySize))
 
     let discount: [Float] = [0, 0, 0.05, 0.10, 0.15, 0.25, 0.30, 0.35]
 
@@ -56,7 +51,7 @@ class PotterBookStore {
     }
 
     /// return array where index is book's title and value is count of that book
-    func createLibrary(books: [Int]) -> [Int] {
+    private func createLibrary(books: [Int]) -> [Int] {
         var library = createEmptyLibrary()
         books.forEach { book in
             library[book] += 1
@@ -76,7 +71,7 @@ class PotterBookStore {
         }
 
         let discount = discount[safe: count] ?? 0
-        let result = (1.0 - discount) * Float(count) * Const.bookPrice
+        let result = (1.0 - discount) * Float(count) * Constants.bookPrice
         return result
     }
 
@@ -122,11 +117,11 @@ class PotterBookStore {
     }
 
     private func fillBasePrices() {
-        for index in 0..<Const.librarySize {
+        for index in 0..<Constants.librarySize {
             var library: [Int] = createEmptyLibrary()
             library[index] = 1
             let key = getPriceKey(library: library)
-            prices[key] = Const.bookPrice
+            prices[key] = Constants.bookPrice
         }
     }
 
@@ -141,7 +136,7 @@ class PotterBookStore {
     }
 
     private func createEmptyLibrary() -> [Int] {
-        [Int](repeating: 0, count: Const.librarySize)
+        [Int](repeating: 0, count: Constants.librarySize)
     }
 }
 
