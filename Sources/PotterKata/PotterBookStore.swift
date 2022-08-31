@@ -65,13 +65,13 @@ class PotterBookStore {
     }
 
     private func getDiscountPrice(_ library: [Int]) -> Float {
-        var count: Int = 0
+        var countBookForDiscount: Int = 0
         library.forEach { book in
-            if book == 1 { count += 1 }
+            if book != 0 { countBookForDiscount += 1 }
         }
 
-        let discount = discount[safe: count] ?? 0
-        let result = (1.0 - discount) * Float(count) * Constants.bookPrice
+        let discount = discount[safe: countBookForDiscount] ?? 0
+        let result = (1.0 - discount) * Float(countBookForDiscount) * Constants.bookPrice
         return result
     }
 
