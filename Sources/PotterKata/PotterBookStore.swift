@@ -38,7 +38,7 @@ class PotterBookStore {
             }
         }
 
-        if isPurchase(library) {
+        if canAddDiscount(library) {
             let discountPrice = getDiscountPrice(library)
 
             if discountPrice < minPrice {
@@ -60,7 +60,7 @@ class PotterBookStore {
     }
 
     /// return the ability to sell at a time
-    private func isPurchase(_ library: [Int]) -> Bool {
+    private func canAddDiscount(_ library: [Int]) -> Bool {
         !library.contains { $0 > 1 }
     }
 
